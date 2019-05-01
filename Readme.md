@@ -35,6 +35,7 @@ Please implement the following tooling:
 
 1. `eslint` - for linting
 2. `nyc` - for code coverage
+3. `pre-push` - for git pre push hook running tests
 
 #### Success Criteria
 
