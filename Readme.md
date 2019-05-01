@@ -42,6 +42,7 @@ Please implement the following tooling:
 1. Create a pull request against `master` with the new tooling and merge it
     1. `eslint` should have an opinionated format
     2. `nyc` should aim for test coverage of `80%` across lines, statements, and branches
+    3. `pre-push` should run the tests before allowing pushing using `git`
 2. Ensure that tooling is connected to `npm test`
 3. Create a separate pull request against `master` with the linter fixes and merge it
 4. Create a separate pull request against `master` to increase code coverage to acceptable thresholds and merge it
