@@ -68,4 +68,6 @@ Please implement the following refactors of the code:
 
 #### Success Criteria
 
-1. A pull request for each of the refactors above
+1. A pull request for each of the refactors above with:
+    1. Code changes
+    2. Tests
