@@ -19,6 +19,7 @@ Below will be your set of tasks to accomplish. Please work on each of these task
 2. [Implement Tooling](#implement-tooling)
 3. [Implement Pagination](#implement-pagination)
 4. [Refactoring](#refactoring)
+5. [Security](#security)
 
 ### Documentation
 
@@ -71,3 +72,15 @@ Please implement the following refactors of the code:
 1. A pull request for each of the refactors above with:
     1. Code changes
     2. Tests
+
+### Security
+
+Please implement the following security controls for your system:
+
+1. Ensure the system is not vulnerable to [SQL injection](https://www.owasp.org/index.php/SQL_Injection)
+
+#### Success Criteria
+
+1. A pull request with:
+    1. Changes to the code
+    2. Tests ensuring the vulnerability is addressed
