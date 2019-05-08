@@ -37,6 +37,7 @@ Please implement the following tooling:
 1. `eslint` - for linting
 2. `nyc` - for code coverage
 3. `pre-push` - for git pre push hook running tests
+4. `winston` - for logging
 
 #### Success Criteria
 
@@ -44,6 +45,7 @@ Please implement the following tooling:
     1. `eslint` should have an opinionated format
     2. `nyc` should aim for test coverage of `80%` across lines, statements, and branches
     3. `pre-push` should run the tests before allowing pushing using `git`
+    4. `winston` should be used to replace console logs and all errors should be logged as well. Logs should go to disk.
 2. Ensure that tooling is connected to `npm test`
 3. Create a separate pull request against `master` with the linter fixes and merge it
 4. Create a separate pull request against `master` to increase code coverage to acceptable thresholds and merge it
@@ -84,3 +86,14 @@ Please implement the following security controls for your system:
 1. A pull request with:
     1. Changes to the code
     2. Tests ensuring the vulnerability is addressed
+
+### Load Testing
+
+Please implement load testing to ensure your service can handle a high amount of traffic
+
+#### Success Criteria
+
+1. Implement load testing using `artillery`
+    1. Create a PR including artillery
+    2. Ensure that load testing is connected to `npm test`
+    3. Test all endpoints under at least `100 rps` for `30s` and ensure that `p99` is under `50ms`
