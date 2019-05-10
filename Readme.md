@@ -20,6 +20,7 @@ Below will be your set of tasks to accomplish. Please work on each of these task
 3. [Implement Pagination](#implement-pagination)
 4. [Refactoring](#refactoring)
 5. [Security](#security)
+6. [Load Testing](#load-testing)
 
 ### Documentation
 
