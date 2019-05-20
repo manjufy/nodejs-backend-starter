@@ -28,7 +28,7 @@ Please deliver documentation of the server that clearly explains the goals of th
 
 #### Success Criteria
 
-1. A pull request against `master` with a clear description of the change and purpose and merge it
+1. A pull request against `master` of your fork with a clear description of the change and purpose and merge it
 3. **[BONUS]** Create an easy way to deploy and view the documentation in a web format and include instructions to do so
 
 ### Implement Tooling
@@ -42,14 +42,14 @@ Please implement the following tooling:
 
 #### Success Criteria
 
-1. Create a pull request against `master` with the new tooling and merge it
+1. Create a pull request against `master` of your fork with the new tooling and merge it
     1. `eslint` should have an opinionated format
     2. `nyc` should aim for test coverage of `80%` across lines, statements, and branches
     3. `pre-push` should run the tests before allowing pushing using `git`
     4. `winston` should be used to replace console logs and all errors should be logged as well. Logs should go to disk.
 2. Ensure that tooling is connected to `npm test`
-3. Create a separate pull request against `master` with the linter fixes and merge it
-4. Create a separate pull request against `master` to increase code coverage to acceptable thresholds and merge it
+3. Create a separate pull request against `master` of your fork with the linter fixes and merge it
+4. Create a separate pull request against `master` of your fork to increase code coverage to acceptable thresholds and merge it
 5. **[BONUS]** Add integration to CI such as Travis or Circle
 6. **[BONUS]** Add Typescript support
 
@@ -72,7 +72,7 @@ Please implement the following refactors of the code:
 
 #### Success Criteria
 
-1. A pull request for each of the refactors above with:
+1. A pull request against `master` of your fork for each of the refactors above with:
     1. Code changes
     2. Tests
 
@@ -84,7 +84,7 @@ Please implement the following security controls for your system:
 
 #### Success Criteria
 
-1. A pull request with:
+1. A pull request against `master` of your fork with:
     1. Changes to the code
     2. Tests ensuring the vulnerability is addressed
 
@@ -95,6 +95,6 @@ Please implement load testing to ensure your service can handle a high amount of
 #### Success Criteria
 
 1. Implement load testing using `artillery`
-    1. Create a PR including artillery
+    1. Create a PR against `master` of your fork including artillery
     2. Ensure that load testing is able to be run using `npm test:load`. You can consider using a tool like `forever` to spin up a daemon and kill it after the load test has completed.
     3. Test all endpoints under at least `100 rps` for `30s` and ensure that `p99` is under `50ms`
