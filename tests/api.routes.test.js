@@ -46,7 +46,7 @@ describe('API Routes', () => {
         })
         .end((err, res) => {
           if (err) console.log(err);
-          expect(res.statusCode).to.be.equal(200);
+          expect(res.statusCode).to.be.equal(400);
           rideId = res.body[0].rideID;
           done();
         });
