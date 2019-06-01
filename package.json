@@ -13,8 +13,6 @@
     "start": "node index.js"
   },
   "pre-push": [
-    "lint",
-    "pretest",
     "test"
   ],
   "keywords": [
