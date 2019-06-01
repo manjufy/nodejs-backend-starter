@@ -13,7 +13,8 @@
     "start": "node index.js"
   },
   "pre-push": [
-    "pretest"
+    "pretest",
+    "test"
   ],
   "keywords": [
     "Xendit"
