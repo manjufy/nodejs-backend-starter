@@ -1,6 +1,6 @@
 /** 
  * Project providing ride related routes
- * @module server/routes
+ * @module ride/routes
  */
 
 'use strict';
@@ -10,9 +10,7 @@ const app = express();
 
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
-/**
- * Routes
- */
+
 module.exports = (db) => {
     /**
      * Health check
@@ -98,7 +96,7 @@ module.exports = (db) => {
             });
         });
     });
-    
+
     /**
      * Get all rides.
      * @name /rides
