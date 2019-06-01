@@ -98,7 +98,7 @@ module.exports = (db) => {
             });
         });
     });
-
+    
     /**
      * Get all rides.
      * @name /rides
