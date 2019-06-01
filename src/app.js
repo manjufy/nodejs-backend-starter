@@ -22,6 +22,15 @@ module.exports = (db) => {
 
     /**
      * Create a Ride.
+     * @param {Object} req.body - Request body object
+     * @param {number} req.body.start_lat - Pickup location latitude of the rider
+     * @param {number} req.body.start_long - Pickup location longitude of the rider
+     * @param {number} req.body.end_lat - Drop off location latitude of the rider
+     * @param {number} req.body.end_long - Drop off location latitude of the rider 
+     * @param {string} req.body.rider_name - Rider name
+     * @param {string} req.body.driver_name - Driver name 
+     * @param {string} req.body.driver_vehicle - Driver's vehicle name (Ex: Toyota)
+     * @param {Array.<Object>} - returns ride array object
      */
     app.post('/rides', jsonParser, (req, res) => {
         const startLatitude = Number(req.body.start_lat);
@@ -56,14 +65,14 @@ module.exports = (db) => {
         if (typeof driverName !== 'string' || driverName.length < 1) {
             return res.send({
                 error_code: 'VALIDATION_ERROR',
-                message: 'Rider name must be a non empty string'
+                message: 'Driver name must be a non empty string'
             });
         }
 
         if (typeof driverVehicle !== 'string' || driverVehicle.length < 1) {
             return res.send({
                 error_code: 'VALIDATION_ERROR',
-                message: 'Rider name must be a non empty string'
+                message: 'Driver vehicle must not be empty'
             });
         }
 
@@ -93,6 +102,7 @@ module.exports = (db) => {
     /**
      * Get all rides.
      * @name /rides
+     * @returns {Array.<Object>} List of rides.
      */
     app.get('/rides', (req, res) => {
         db.all('SELECT * FROM Rides', function (err, rows) {
