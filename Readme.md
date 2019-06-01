@@ -26,6 +26,21 @@ Below will be your set of tasks to accomplish. Please work on each of these task
 
 Please deliver documentation of the server that clearly explains the goals of this project and clarifies the API response that is expected.
 
+We are going to use JSDoc to generate API documentation for the project.
+
+Install JSDoc globally inorder to generate the documentation
+`npm install -g jsdoc`
+
+To save it in package.json file
+
+`npm install --save-dev` jsdoc
+
+To generate the documentation, run the following command
+
+`jsdoc src -r -c  jsconfig.json  -d docs`
+
+``
+
 #### Success Criteria
 
 1. A pull request against `master` of your fork with a clear description of the change and purpose and merge it
