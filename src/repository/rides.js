@@ -50,7 +50,7 @@ module.exports = (db) => {
    */
   const getById = (id) => {
     return new Promise((resolve, reject) => {
-      db.all(`SELECT * FROM Rides WHERE rideID='${id}'`, function (err, rows) {
+      db.all(`SELECT * FROM Rides WHERE rideID = ?`, id, function (err, rows) {
         if (err) {
           reject(err);
         };

@@ -128,6 +128,14 @@ module.exports = (db) => {
    * @name /rides/:id
    */
   app.get('/rides/:id', async (req, res) => {
+    const id = parseInt(req.params.id);
+    if (isNaN(id) || typeof id !== 'number') {
+      return res.send({
+        error_code: 'INVALID_INPUT',
+        message: 'Invalid input. Input must integer'
+      });
+    }
+
     try {
       const rows = await rideRepo.getById(req.params.id);
       if (rows.length === 0) {
