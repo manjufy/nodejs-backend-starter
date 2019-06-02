@@ -93,5 +93,17 @@ describe('API Routes', () => {
           done();
         });
     });
+    it('should throw an error as rideId is not an integer', (done) => {
+      request(app)
+        .get(`/rides/hello`)
+        .end((err, res) => {
+          if (err) console.error(err);
+          console.log(res.body);
+          expect(res.statusCode).to.be.equal(200);
+          expect(res.body).include.all.keys('error_code', 'message');
+          expect(res.body.error_code).to.be.equal('INVALID_INPUT');
+          done();
+        });
+    });
   });
 });
