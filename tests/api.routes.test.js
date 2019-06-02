@@ -32,6 +32,26 @@ describe('API Routes', () => {
           done();
         });
     });
+    it('should NOT create a ride', (done) => {
+      request(app)
+        .post('/rides')
+        .send({
+          'start_lat': 90.00,
+          'start_long': 181.00,
+          'end_lat': 90.00,
+          'end_long': 90.00,
+          'rider_name': 'Manjunath',
+          'driver_name': 'Dough',
+          'driver_vehicle': 'Toyota'
+        })
+        .end((err, res) => {
+          if (err) console.log(err);
+          expect(res.statusCode).to.be.equal(200);
+          expect(res.body).include.all.keys('error_code', 'message');
+          expect(res.body.error_code).to.be.equal('VALIDATION_ERROR');
+          done();
+        });
+    });
     it('should create a ride', (done) => {
       request(app)
         .post('/rides')

@@ -15,7 +15,7 @@ module.exports = (db) => {
   /**
    * Health check
    * @name /health
-   */
+  */
   app.get('/health', (req, res) => res.send('Healthy'));
 
   /**
@@ -40,10 +40,14 @@ module.exports = (db) => {
     const driverVehicle = req.body.driver_vehicle;
 
     if (startLatitude < -90 || startLatitude > 90 || startLongitude < -180 || startLongitude > 180) {
-      logger.error(`Error at /rides %s`, JSON.stringify(req.body));
+      // eslint-disable-next-line camelcase
+      const error_code = 'VALIDATION_ERROR';
+      const message = 'Start latitude and longitude must be between -90 - 90 and -180 to 180 degrees respectively';
+      // example of logging to winston logger
+      logger.error(`Error at /rides %s %s %s`, error_code, message, JSON.stringify(req.body));
       return res.send({
-        error_code: 'VALIDATION_ERROR',
-        message: 'Start latitude and longitude must be between -90 - 90 and -180 to 180 degrees respectively'
+        error_code,
+        message
       });
     }
 
@@ -104,8 +108,14 @@ module.exports = (db) => {
    * @returns {Array.<Object>} List of rides.
    */
   app.get('/rides', (req, res) => {
-    db.all('SELECT * FROM Rides', function (err, rows) {
+    const page = req.query.page || 1;
+    const perpage = req.query.perpage || 10;
+    const offset = page === 1 ? 1 : (page - 1) * perpage;
+    const query = `SELECT * FROM Rides LIMIT ${perpage} OFFSET ${offset}`;
+
+    db.all(query, function (err, rows) {
       if (err) {
+        logger.error(`Error GET /rides %s %s`, err, query);
         return res.send({
           error_code: 'SERVER_ERROR',
           message: 'Unknown error'
@@ -119,7 +129,11 @@ module.exports = (db) => {
         });
       }
 
-      res.send(rows);
+      res.send({
+        page,
+        perpage,
+        rows
+      });
     });
   });
 
