@@ -109,8 +109,14 @@ module.exports = (db) => {
    * @returns {Array.<Object>} List of rides.
    */
   app.get('/rides', (req, res) => {
-    db.all('SELECT * FROM Rides', function (err, rows) {
+    const page = req.query.page || 1;
+    const perpage = req.query.perpage || 10;
+    const offset = page === 1 ? 1 : (page - 1) * perpage;
+    const query = `SELECT * FROM Rides LIMIT ${perpage} OFFSET ${offset}`;
+
+    db.all(query, function (err, rows) {
       if (err) {
+        logger.error(`Error GET /rides %s %s`, err, query);
         return res.send({
           error_code: 'SERVER_ERROR',
           message: 'Unknown error'
@@ -124,7 +130,11 @@ module.exports = (db) => {
         });
       }
 
-      res.send(rows);
+      res.send({
+        page,
+        perpage,
+        rows
+      });
     });
   });
 
