@@ -5,6 +5,7 @@ const app = express();
 
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
+const logger = require('./common/logger');
 
 module.exports = (db) => {
   app.get('/health', (req, res) => res.send('Healthy'));
@@ -19,6 +20,7 @@ module.exports = (db) => {
     const driverVehicle = req.body.driver_vehicle;
 
     if (startLatitude < -90 || startLatitude > 90 || startLongitude < -180 || startLongitude > 180) {
+      logger.error(`Error at /rides %s`, JSON.stringify(req.body));
       return res.send({
         error_code: 'VALIDATION_ERROR',
         message: 'Start latitude and longitude must be between -90 - 90 and -180 to 180 degrees respectively'
@@ -77,6 +79,7 @@ module.exports = (db) => {
   });
 
   app.get('/rides', (req, res) => {
+    logger.debug(`Fetching rides records`);
     db.all('SELECT * FROM Rides', function (err, rows) {
       if (err) {
         return res.send({
