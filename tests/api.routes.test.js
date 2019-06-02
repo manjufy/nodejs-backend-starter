@@ -81,5 +81,17 @@ describe('API Routes', () => {
           done();
         });
     });
+    it('should throw an error as ride does not exists', (done) => {
+      request(app)
+        .get(`/rides/100`)
+        .end((err, res) => {
+          if (err) console.error(err);
+          console.log(res.body);
+          expect(res.statusCode).to.be.equal(200);
+          expect(res.body).include.all.keys('error_code', 'message');
+          expect(res.body.error_code).to.be.equal('RIDES_NOT_FOUND_ERROR');
+          done();
+        });
+    });
   });
 });
