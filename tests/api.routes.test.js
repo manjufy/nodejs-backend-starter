@@ -32,7 +32,7 @@ describe('API Routes', () => {
           done();
         });
     });
-    it('should create a ride', (done) => {
+    it('should NOT create a ride', (done) => {
       request(app)
         .post('/rides')
         .send({
