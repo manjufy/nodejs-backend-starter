@@ -41,10 +41,14 @@ module.exports = (db) => {
     const driverVehicle = req.body.driver_vehicle;
 
     if (startLatitude < -90 || startLatitude > 90 || startLongitude < -180 || startLongitude > 180) {
-      logger.error(`Error at /rides %s`, JSON.stringify(req.body));
+      // eslint-disable-next-line camelcase
+      const error_code = 'VALIDATION_ERROR';
+      const message = 'Start latitude and longitude must be between -90 - 90 and -180 to 180 degrees respectively';
+      // example of logging to winston logger
+      logger.error(`Error at /rides %s %s %s`, error_code, message, JSON.stringify(req.body));
       return res.send({
-        error_code: 'VALIDATION_ERROR',
-        message: 'Start latitude and longitude must be between -90 - 90 and -180 to 180 degrees respectively'
+        error_code,
+        message
       });
     }
 
