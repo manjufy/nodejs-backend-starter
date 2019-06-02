@@ -10,8 +10,10 @@ const app = express();
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
 const logger = require('./common/logger');
+const repository = require('./repository/rides');
 
 module.exports = (db) => {
+  const rideRepo = repository(db);
   /**
    * Health check
    * @name /health
@@ -30,7 +32,7 @@ module.exports = (db) => {
    * @param {string} req.body.driver_vehicle - Driver's vehicle name (Ex: Toyota)
    * @param {Array.<Object>} - returns ride array object
    */
-  app.post('/rides', jsonParser, (req, res) => {
+  app.post('/rides', jsonParser, async (req, res) => {
     const startLatitude = Number(req.body.start_lat);
     const startLongitude = Number(req.body.start_long);
     const endLatitude = Number(req.body.end_lat);
@@ -79,27 +81,17 @@ module.exports = (db) => {
       });
     }
 
-    var values = [req.body.start_lat, req.body.start_long, req.body.end_lat, req.body.end_long, req.body.rider_name, req.body.driver_name, req.body.driver_vehicle];
+    try {
+      const rows = await rideRepo.create(req.body);
 
-    db.run('INSERT INTO Rides(startLat, startLong, endLat, endLong, riderName, driverName, driverVehicle) VALUES (?, ?, ?, ?, ?, ?, ?)', values, function (err) {
-      if (err) {
-        return res.send({
-          error_code: 'SERVER_ERROR',
-          message: 'Unknown error'
-        });
-      }
-
-      db.all('SELECT * FROM Rides WHERE rideID = ?', this.lastID, function (err, rows) {
-        if (err) {
-          return res.send({
-            error_code: 'SERVER_ERROR',
-            message: 'Unknown error'
-          });
-        }
-
-        res.send(rows);
+      return res.send(rows);
+    } catch (error) {
+      logger.error(`Error %s`, JSON.stringify(error));
+      return res.send({
+        error_code: 'SERVER_ERROR',
+        message: 'Unknown error'
       });
-    });
+    }
   });
 
   /**
@@ -107,21 +99,9 @@ module.exports = (db) => {
    * @name /rides
    * @returns {Array.<Object>} List of rides.
    */
-  app.get('/rides', (req, res) => {
-    const page = req.query.page || 1;
-    const perpage = req.query.perpage || 10;
-    const offset = page === 1 ? 1 : (page - 1) * perpage;
-    const query = `SELECT * FROM Rides LIMIT ${perpage} OFFSET ${offset}`;
-
-    db.all(query, function (err, rows) {
-      if (err) {
-        logger.error(`Error GET /rides %s %s`, err, query);
-        return res.send({
-          error_code: 'SERVER_ERROR',
-          message: 'Unknown error'
-        });
-      }
-
+  app.get('/rides', async (req, res) => {
+    try {
+      const rows = await rideRepo.getAll(req.query);
       if (rows.length === 0) {
         return res.send({
           error_code: 'RIDES_NOT_FOUND_ERROR',
@@ -129,27 +109,27 @@ module.exports = (db) => {
         });
       }
 
-      res.send({
-        page,
-        perpage,
+      return res.send({
+        page: req.query.page,
+        perpage: req.query.perpage,
         rows
       });
-    });
+    } catch (error) {
+      logger.error(`Error %s`, JSON.stringify(error));
+      return res.send({
+        error_code: 'SERVER_ERROR',
+        message: 'Unknown error'
+      });
+    }
   });
 
   /**
    * Get a ride.
    * @name /rides/:id
    */
-  app.get('/rides/:id', (req, res) => {
-    db.all(`SELECT * FROM Rides WHERE rideID='${req.params.id}'`, function (err, rows) {
-      if (err) {
-        return res.send({
-          error_code: 'SERVER_ERROR',
-          message: 'Unknown error'
-        });
-      }
-
+  app.get('/rides/:id', async (req, res) => {
+    try {
+      const rows = await rideRepo.getById(req.params.id);
       if (rows.length === 0) {
         return res.send({
           error_code: 'RIDES_NOT_FOUND_ERROR',
@@ -157,8 +137,14 @@ module.exports = (db) => {
         });
       }
 
-      res.send(rows);
-    });
+      return res.send(rows);
+    } catch (error) {
+      logger.error(`Error %s`, JSON.stringify(error));
+      return res.send({
+        error_code: 'SERVER_ERROR',
+        message: 'Unknown error'
+      });
+    }
   });
 
   return app;
