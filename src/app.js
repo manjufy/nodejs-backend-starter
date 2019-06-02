@@ -1,15 +1,35 @@
+/**
+ * Project providing ride related routes
+ * @module ride/routes
+ */
+
 'use strict';
 
 const express = require('express');
 const app = express();
-
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
 const logger = require('./common/logger');
 
 module.exports = (db) => {
+  /**
+   * Health check
+   * @name /health
+   */
   app.get('/health', (req, res) => res.send('Healthy'));
 
+  /**
+   * Create a Ride.
+   * @param {Object} req.body - Request body object
+   * @param {number} req.body.start_lat - Pickup location latitude of the rider
+   * @param {number} req.body.start_long - Pickup location longitude of the rider
+   * @param {number} req.body.end_lat - Drop off location latitude of the rider
+   * @param {number} req.body.end_long - Drop off location latitude of the rider
+   * @param {string} req.body.rider_name - Rider name
+   * @param {string} req.body.driver_name - Driver name
+   * @param {string} req.body.driver_vehicle - Driver's vehicle name (Ex: Toyota)
+   * @param {Array.<Object>} - returns ride array object
+   */
   app.post('/rides', jsonParser, (req, res) => {
     const startLatitude = Number(req.body.start_lat);
     const startLongitude = Number(req.body.start_long);
@@ -78,8 +98,12 @@ module.exports = (db) => {
     });
   });
 
+  /**
+   * Get all rides.
+   * @name /rides
+   * @returns {Array.<Object>} List of rides.
+   */
   app.get('/rides', (req, res) => {
-    logger.debug(`Fetching rides records`);
     db.all('SELECT * FROM Rides', function (err, rows) {
       if (err) {
         return res.send({
@@ -99,6 +123,10 @@ module.exports = (db) => {
     });
   });
 
+  /**
+   * Get a ride.
+   * @name /rides/:id
+   */
   app.get('/rides/:id', (req, res) => {
     db.all(`SELECT * FROM Rides WHERE rideID='${req.params.id}'`, function (err, rows) {
       if (err) {
