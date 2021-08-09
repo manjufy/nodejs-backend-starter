@@ -9,7 +9,7 @@
   "scripts": {
     "lint": "eslint ./src --fix",
     "pretest": "npm run lint",
-    "test": "nyc mocha tests",
+    "test": "nyc --reporter=lcov --reporter=html mocha tests",
     "test:load": "artillery run tests/load/rides.yml",
     "start": "node index.js"
   },
